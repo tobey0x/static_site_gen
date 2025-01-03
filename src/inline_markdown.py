@@ -2,6 +2,12 @@ import re
 from textnode import TextNode, TextType
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
+    """
+    THis function uses the inline markdown elements as delimeter to
+    convert markdown text to HTML children
+    """
+    
+    
     new_nodes = []
     
     for node in old_nodes:
@@ -30,6 +36,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
 
     return new_nodes
 
+# Converting inline image texts into img node for the HTML
 def split_nodes_image(old_nodes):
     new_nodes = []
     
@@ -62,6 +69,8 @@ def split_nodes_image(old_nodes):
             new_nodes.append(TextNode(original_text, TextType.TEXT))
     return new_nodes
 
+
+# Converting inline link texts into anchor node for the HTML
 def split_nodes_link(old_nodes):
     new_nodes = []
     
