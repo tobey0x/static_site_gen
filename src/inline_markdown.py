@@ -100,12 +100,12 @@ def split_nodes_link(old_nodes):
     return new_nodes
 
 def extract_markdown_images(text):
-    image_regex = r"!\[(.*?)\]\((https?://[^\s]+)\)"
+    image_regex = r"!\[(.*?)\]\((.*?)\)"
     
     return re.findall(image_regex, text)
 
 def extract_markdown_links(text):
-    link_regex = r"\[(.*?)\]\((https?://[^\s]+)\)"
+    link_regex = r"\[(.*?)\]\((.*?)\)"
     
     return re.findall(link_regex, text)
 
