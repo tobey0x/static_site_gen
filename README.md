@@ -6,12 +6,11 @@ A static site generator takes raw content files (like Markdown and images) and t
 
 
 #### How To Run Project
-In your terminal, clone this repo
-    navigate to the cloned folder and run
+In your terminal, clone this repo, navigate to the cloned folder and run
 
-    ```bash:
-    ./main.sh
-    ```
+```bash
+./main.sh
+```
 
 #### Test
 ```bash
