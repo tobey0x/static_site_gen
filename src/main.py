@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 import shutil
 from block_markdown import markdown_to_html_node
 
@@ -31,20 +32,27 @@ def generate_page(from_path, template_path, dest_path):
         template = f.read()
         
     title = extract_title(markdown)
-    html = markdown_to_html_node(markdown)
+    html = markdown_to_html_node(markdown).to_html()
     
     template = template.replace("{{ Title }}", title).replace(
-        "{{ Content }}", html.to_html()
+        "{{ Content }}", html
     )
 
-    if not dest_path.parent.exists():
-        dest_path.parent.mkdir(parents=True, exist_ok=True)
+    dest_dir_path = os.path.dirname(dest_path)
+    if dest_dir_path != "":
+        os.makedirs(dest_dir_path, exist_ok=True)
+    to_file = open(dest_path, "w")
+    to_file.write(template)
     
-    if dest_path == Path(dest_path)/'':
-        dest_file = dest_path / "index.html"
-        dest_path = dest_file
-
-    dest_path.write_text(template)
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    for filename in os.listdir(dir_path_content):
+        from_path = os.path.join(dir_path_content, filename)
+        dest_path = os.path.join(dest_dir_path, filename)
+        if os.path.isfile(from_path):
+            dest_path = Path(dest_path).with_suffix(".html")
+            generate_page(from_path, template_path, dest_path)
+        else:
+            generate_pages_recursive(from_path, template_path, dest_path)
 
 
 def main():
@@ -58,10 +66,10 @@ def main():
         
     recursive_copy_directory(static_dir_in_src, public_dir_in_dest)
     
-    from_path = project_root / "content/index.md"
+    from_path = project_root / "content"
     template_path = project_root / "template.html"
     dest_path = project_root / "public"
     
-    generate_page(from_path, template_path, dest_path)
+    generate_pages_recursive(from_path, template_path, dest_path)
 
 main()
